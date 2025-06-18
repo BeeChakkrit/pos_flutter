@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pos_flutter/src/providers/auth_provider.dart';
 import 'package:pos_flutter/src/views/home/home_view.dart';
 import 'package:pos_flutter/src/views/login/login_view.dart';
+import 'package:pos_flutter/src/views/table/table_view.dart';
 import 'package:provider/provider.dart';
 
 final router = GoRouter(
@@ -14,13 +15,13 @@ final router = GoRouter(
         return auth.isLoggedIn ? const HomeScreen() : const LoginView();
       },
     ),
-    // GoRoute(
-    //   path: '/sale',
-    //   builder: (context, state) => const SaleScreen(),
-    // ),
-    // GoRoute(
-    //   path: '/report',
-    //   builder: (context, state) => const ReportScreen(),
-    // ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/table',
+      builder: (context, state) => const TableView(),
+    ),
   ],
 );
