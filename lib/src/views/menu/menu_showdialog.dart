@@ -45,12 +45,16 @@ class MenuShowdialog extends StatelessWidget {
                     children: [
                       ListTile(
                           leading: const Icon(Icons.content_paste, color: Colors.amber, size: 32),
-                          title: Text(
-                            'รายการคำสั่งซื้อทั้งหมด (${controller.menuImage.length})',
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          title: Consumer<MenuControllers>(
+                            builder: (context, controller, _) {
+                              return Text(
+                                'จำนวนทั้งหมด: ${controller.totalQty} รายการ',
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
                           ),
                           subtitle: Consumer<MenuControllers>(
                             builder: (context, controller, _) {

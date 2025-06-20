@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_flutter/src/providers/color_app.dart';
 import 'package:pos_flutter/src/views/menu/menu_controller.dart';
 import 'package:pos_flutter/src/views/menu/menu_showdialog.dart';
+import 'package:pos_flutter/src/widgets/load_data.dart';
 import 'package:provider/provider.dart';
 
 class MenuFast extends StatelessWidget {
@@ -102,6 +103,44 @@ class MenuFast extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              Consumer<MenuControllers>(
+                                builder: (context, controller, _) {
+                                  int existingIndex = controller.controllerAddMenu.indexWhere(
+                                    (item) => item['name'] == controllers[index]['name'],
+                                  );
+                                  return existingIndex != -1
+                                      ? CustomPaint(
+                                          painter: BottomRightTrianglePainter(),
+                                        )
+                                      : const SizedBox.shrink();
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Consumer<MenuControllers>(
+                                      builder: (context, controller, _) {
+                                        int existingIndex = controller.controllerAddMenu.indexWhere(
+                                          (item) => item['name'] == controllers[index]['name'],
+                                        );
+                                        return Text(
+                                          existingIndex != -1
+                                              ? '${controller.controllerAddMenu[existingIndex]['qty']}'
+                                              : '',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                            shadows: [Shadow(color: Colors.black87, blurRadius: 3)],
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -110,4 +149,27 @@ class MenuFast extends StatelessWidget {
       ),
     );
   }
+}
+
+class BottomRightTrianglePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final path = Path()
+      ..moveTo(size.width, size.height) // bottom-right
+      ..lineTo(size.width * 0.10, size.height) // ครึ่งล่าง
+      ..lineTo(size.width, size.height * 0.10) // ครึ่งขวา
+      ..close();
+
+    final paint = Paint()
+      ..shader = LinearGradient(
+        colors: [Colors.green.withOpacity(0.5), Colors.transparent],
+        begin: Alignment.bottomRight,
+        end: Alignment.center,
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

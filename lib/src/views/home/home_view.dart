@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pos_flutter/src/providers/color_app.dart';
 import 'package:pos_flutter/src/views/menu/menu_controller.dart';
 import 'package:pos_flutter/src/views/menu/menu_name.dart';
 import 'package:pos_flutter/src/views/menu/menu_healthy.dart';
+import 'package:pos_flutter/src/views/table/table_view.dart';
 import 'package:pos_flutter/src/widgets/default_appbar.dart';
+import 'package:pos_flutter/src/widgets/my_sizedbox.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -47,7 +50,18 @@ class _HomeScreenState extends State<HomeScreen> {
       Icons.bar_chart,
     ];
     return Scaffold(
-      appBar: DefaultAppBar(),
+      appBar: DefaultAppBar(
+        actions: [
+          Consumer<MenuControllers>(
+            builder: (context, controller, _) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Text('เวลา: ${controller.formattedTime}'),
+              );
+            },
+          )
+        ],
+      ),
       body: Row(
         children: [
           // Sidebar
@@ -55,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: 100,
             color: ColorApp.appBarBackground,
             child: ListView.builder(
+              // shrinkWrap: true,
               itemCount: titles.length,
               itemBuilder: (context, index) {
                 final isSelected = index == selectedIndex;

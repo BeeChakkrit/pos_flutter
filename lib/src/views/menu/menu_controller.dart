@@ -68,6 +68,14 @@ class MenuControllers extends ChangeNotifier {
     ];
   }
 
+  Future<void> preloadMenuImages(BuildContext context, List<String> urls) async {
+    final futures = urls.map((url) {
+      return precacheImage(NetworkImage(url), context);
+    }).toList();
+
+    await Future.wait(futures);
+  }
+
   List<Map<String, dynamic>> controllerMenuAdditeam = [];
   List<Map<String, dynamic>> get controllerAddMenu => controllerMenuAdditeam;
 
@@ -129,6 +137,10 @@ class MenuControllers extends ChangeNotifier {
     }
     // _reorderItems();
     notifyListeners();
+  }
+
+  int get totalQty {
+    return controllerAddMenu.fold(0, (sum, item) => sum + ((item['qty'] ?? 0) as int));
   }
 
   double get totalPrice {
